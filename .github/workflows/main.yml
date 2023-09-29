@@ -1,0 +1,144 @@
+name: Main Workflow
+on:
+  push:
+    tags:
+      - v*
+    branches: [ master ]
+    paths:
+      - src/**
+      - tests/**
+      - .github/workflows/main.yml
+      - package-lock.json
+      - ts-config.json
+      - jest.config.js
+    pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    timeout-minutes: 60
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Caching Node Modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/
+            .npm/
+          key: dependencies-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Installing Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci --cache .npm --prefer-offline
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    timeout-minutes: 60
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Restoring Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/
+            .npm/
+          key: dependencies-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Caching build code
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            lib/
+          key: build-${{ github.ref }}
+      - name: Building solution...
+        run: npm run build:prod
+
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    timeout-minutes: 60
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Restoring Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/
+            .npm/
+          key: dependencies-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Restoring built solution...
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            lib/
+          key: build-${{ github.ref }}
+      - name: Running tests & collecting coverage
+        run: npm run coverage
+      - name: Caching test results...
+        uses: actions/cache@v3
+        with:
+          path: workdocs/coverage/
+          key: test-${{ github.ref }}
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: workdocs/coverage
+
+  release:
+    if: startsWith(github.ref, 'refs/tags')
+    needs:
+      - tests
+      - build
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Restoring Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/
+            .npm/
+          key: dependencies-${{ github.ref }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Restoring built solution...
+        uses: actions/cache@v3
+        with:
+          path: |
+            dist/
+            lib/
+          key: build-${{ github.ref }}
+      - name: Create Change Log
+        run: cp ./workdocs/release_notes.md ./Changelog.md
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+          files: |
+            README.md
+            LICENSE.md
+            Changelog.md
+            lib/**
+            dist/**

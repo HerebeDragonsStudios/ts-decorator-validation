@@ -1,0 +1,60 @@
+name: Documentation
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - workdocs/**
+      - .github/workflows/docs.yml
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  pages:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v4
+      - name: Restoring Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/
+            .npm/
+          key: dependencies-${{ github.ref }}
+      - name: Restoring Test Results...
+        uses: actions/cache@v3
+        with:
+          path: workdocs/coverage/
+          key: test-${{ github.ref }}
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: test-results
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: main.yml
+          workflow_conclusion: success
+      - name: Build Pages from Source
+        run: npm run docs
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
