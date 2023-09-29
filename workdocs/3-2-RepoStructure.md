@@ -1,7 +1,7 @@
 ### Repository Structure
 
 ```
-ts-workspace
+ts-decorator-validation
 │
 │   .github                 <-- Workflows folder
 │   .gitignore              <-- Defines files ignored to git

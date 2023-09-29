@@ -1,7 +1,7 @@
 {
-  "name": "@herebedragons-studios/ts-workspace",
+  "name": "@herebedragons-studios/ts-decorator-validation",
   "version": "0.0.1",
-  "description": "Template Typescript repo",
+  "description": "Simple decorator based validation engine",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "module": "./lib/index.js",
@@ -25,24 +25,27 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HereBeDragonsStudios/ts-workspace.git"
+    "url": "git+https://github.com/HereBeDragonsStudios/ts-decorator-validation.git"
   },
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },
   "keywords": [
-    "typescript",
+    "validation",
+    "cross-platorm",
+    "customization",
+    "open-source",
     "decorators",
-    "logging",
-    "timestamp"
+    "typescript",
+    "custom validation"
   ],
   "author": "Here Be Dragons Studios",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HereBeDragonsStudios/ts-workspace/issues"
+    "url": "https://github.com/HereBeDragonsStudios/ts-decorator-validation/issues"
   },
-  "homepage": "https://github.com/HereBeDragonsStudios/ts-workspace#readme",
+  "homepage": "https://github.com/HereBeDragonsStudios/ts-decorator-validation#readme",
   "devDependencies": {
     "@types/jest": "^29.5.5",
     "@types/node": "^20.6.3",
@@ -68,5 +71,8 @@
     "typescript": "^5.2.2",
     "vinyl-named": "^1.1.0",
     "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }

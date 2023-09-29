@@ -1,50 +1,55 @@
 ![Banner](assets/banner.png)
 
 #### Status
-![Main](https://github.com/herebedragonsstudios/ts-workspace/actions/workflows/main.yml/badge.svg)
-![Docs](https://github.com/herebedragonsstudios/ts-workspace/actions/workflows/docs.yml/badge.svg)
+![Main](https://github.com/herebedragonsstudios/ts-decorator-validation/actions/workflows/main.yml/badge.svg)
+![Docs](https://github.com/herebedragonsstudios/ts-decorator-validation/actions/workflows/docs.yml/badge.svg)
 
 
+## Simple Model Validation Engine
 
-## Typescript workspace
+### Decorator based
 
+Simple implementation of a Typescript decorator based validation system.
 
+Meant to be easily extended, customized and integrated with the browser's input validation mechanisms
 
-### Static Methods
-
- - info
- - all
- - debug
- - error
- - critical
 
 ### Installation
 
-In order to use the logging package, we need to follow a list of steps presented below.
+In order to use the package, we need to follow a list of steps presented below.
 
 ##### Step 1: Run npm install
 
 To install as a dependency do:
 ```sh
-$ npm install @herebedragonsstudios1/ts-logging
+$ npm install @herebedragons-studios/ts-decorator-validation
 ```
 
 To install as a dev dependency do:
 ```sh
-$ npm install @herebedragonsstudios1/ts-logging --save-dev
+$ npm install @herebedragons-studios/ts-decorator-validation --save-dev
 ```
 instead.
 
 
 
+![Forks](https://img.shields.io/github/forks/herebedragonsstudios/decorator-validation.svg)
+![Stars](https://img.shields.io/github/stars/herebedragonsstudios/decorator-validation.svg)
+![Watchers](https://img.shields.io/github/watchers/herebedragonsstudios/decorator-validation.svg)
 
+![Open Issues](https://img.shields.io/github/issues/herebedragonsstudios/decorator-validation.svg)
+![Closed Issues](https://img.shields.io/github/issues-closed/herebedragonsstudios/decorator-validation.svg)
+![Pull Requests](https://img.shields.io/github/issues-pr-closed/herebedragonsstudios/decorator-validation.svg)
+![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=herebedragonsstudios&repo=ts-decorator-validation)](https://github.com/herebedragonsstudios/decorator-validation)
 
 Simple ts template repository
 
 ### Repository Structure
 
 ```
-ts-workspace
+ts-decorator-validation
 │
 │   .github                 <-- Workflows folder
 │   .gitignore              <-- Defines files ignored to git
