@@ -1,6 +1,6 @@
 {
   "name": "@herebedragons-studios/ts-decorator-validation",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "Simple decorator based validation engine",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
